@@ -15,7 +15,11 @@ install metamask </br>
 </br> select injected Web3 as run time environment
 </br> in metamask select the kovan test network preloaded with test ethers 
 </br> deploy the contract by confirming the transaction in metamask
-
+</br> in VS code create an empty directory 
+</br> install http-server by "npm install -g http-server" 
+</br> create UT.html
+</br> run file by "http-server"
+</br> copy paste url in browser and interact with the smart contract deployed on remix
 
 
   
