@@ -1,0 +1,125 @@
+<html>
+<body>
+    <div>
+        <input type = "text" id="amount">
+        <p id = 'balance'></p>
+        <button id='deposit' > Deposit</button>
+        <button id='claim' > Claim</button>
+    </div>
+
+	<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+
+    <script>
+        var contract;
+        $(document).ready(function()
+        {
+            web3 = new Web3(web3.currentProvider);
+            var  address = "0x37B9D07A84a38113e8a9FD07D117dF96CAddA609" ;
+            var abi = [
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "account",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "lockedUntil",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_amount",
+				"type": "uint256"
+			}
+		],
+		"name": "claim",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "deposit",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getBalance",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+] ;
+            contract = new web3.eth.Contract(abi,address);
+        })
+
+		$('#deposit').click(function()
+		{
+			var amt = 0;
+			amt = parseInt($('#amount').val());
+
+			web3.eth.requestAccounts().then(function(accounts) // getAccounts() got replaced with requestAccounts()
+			{ 
+				var acc = accounts[0];
+				return contract.methods.deposit().send({from: acc, value: amt});
+	        }).then(function(tx)
+	{
+		console.log(tx);
+	}).catch(function(tx)
+	{
+		console.log(tx);
+	})
+
+		})
+
+		$('#claim').click(function()
+		{
+			var amt = 0;
+			amt = parseInt($('#amount').val());
+
+			web3.eth.requestAccounts().then(function(accounts)
+			{
+				var acc = accounts[0];
+				return contract.methods.claim(amt).send({from: acc });
+	        }).then(function(tx)
+	{
+		console.log(tx);
+	}).catch(function(tx)
+	{
+		console.log(tx);
+	})
+
+		})
+	
+    </script>
+
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+</body>
+
+</html>
